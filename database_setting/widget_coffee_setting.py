@@ -6,13 +6,13 @@ from mysql.connector import Error, errorcode
 from db_connection.db_connection import ConnectionPool
 
 
-class coffee_widget(QWidget):
+class MyCoffee(QWidget):
     def __init__(self):
         super().__init__()
         self.ui = uic.loadUi("database_setting/coffee.ui")
-        DBinit = self.ui.btn_init.clicked.connect(self.db_init)
-        DBrestore = self.ui.btn_restore.clicked.connect(self.db_restore)
-        DBbackup = self.ui.btn_backup.clicked.connect(self.db_backup)
+        self.ui.btn_init.clicked.connect(self.db_init)
+        self.ui.btn_restore.clicked.connect(self.db_restore)
+        self.ui.btn_backup.clicked.connect(self.db_backup)
         self.ui.show()
 
     def db_init(self):
