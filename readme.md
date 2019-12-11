@@ -8,7 +8,8 @@ SHOW VARIABLES LIKE "secure_file_priv";
 secure_file_priv=""
 */
 
-원하는 경로에 (Errcode: 13 - Permission denied) 해결책 
+원하는 경로에 (Errcode: 13 - Permission denied) 해결책
+
 https://dreamlog.tistory.com/563
 
 /etc/apparmor.d/usr.sbin.mysqld를 편집
