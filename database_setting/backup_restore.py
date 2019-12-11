@@ -44,7 +44,6 @@ class BackupRestore:
             if not os.path.exists(data_path):
                 print("file '{}' does not exist.".format(data_path))
                 return
-
             restore_sql = "LOAD DATA INFILE '{}' INTO TABLE {} {}".format(data_path, table_name, BackupRestore.OPTION)
             cursor.execute(restore_sql)
             conn.commit()

@@ -1,5 +1,4 @@
 from mysql.connector import Error, errorcode
-
 from database_setting.read_ddl import read_ddl_file
 from db_connection.db_connection import ConnectionPool
 
