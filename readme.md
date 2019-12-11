@@ -16,13 +16,13 @@ https://dreamlog.tistory.com/563
 
 추가
 
-    \# Allow data files dir access
+    # Allow data files dir access
 
-      /var/lib/mysql-files/ r,
-      /var/lib/mysql-files/** rwk,
+    /var/lib/mysql-files/ r,
+    /var/lib/mysql-files/** rwk,
 
-      /home/work/PycharmProjects/coffee_proj/data/ r,
-      /home/work/PycharmProjects/coffee_proj/data/** rwk,
+    /home/work/PycharmProjects/coffee_proj/data/ r,
+    /home/work/PycharmProjects/coffee_proj/data/** rwk,
 
 
 /etc/init.d/apparmor restart
