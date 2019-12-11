@@ -140,6 +140,7 @@ class BackupRestore:
     def __init__(self, source_dir='data/', data_dir='data/'):
         self.source_dir = os.path.abspath(source_dir) + "/"
         self.data_dir = os.path.abspath(data_dir) + "/"
+        self._db = read_ddl_file()
         self.idx_backup = 1
         self.idx_restore = 1
 
@@ -148,6 +149,7 @@ class BackupRestore:
         try:
             conn = ConnectionPool.get_instance().get_connection()
             cursor = conn.cursor()
+            cursor.execute("use {}".format(self._db['database_name']))
             source_path = self.source_dir + filename
             if os.path.exists(source_path):
                 os.remove(source_path)
@@ -157,6 +159,7 @@ class BackupRestore:
             print(table_name, "backup complete!")
         except Error as err:
             print(err)
+
             print(table_name, "backup fail!")
             self.idx_backup = 0
         finally:
@@ -170,7 +173,7 @@ class BackupRestore:
             conn = ConnectionPool.get_instance().get_connection()
             cursor = conn.cursor()
             data_path = os.path.abspath(self.source_dir + filename).replace('\\', '/')
-            cursor.execute("use coffee")
+            cursor.execute("use {}".format(self._db['database_name']))
             if not os.path.exists(data_path):
                 print("file '{}' does not exist.".format(data_path))
                 return
