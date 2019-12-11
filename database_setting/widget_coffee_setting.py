@@ -1,7 +1,7 @@
 import os
 from configparser import ConfigParser
 from PyQt5 import uic
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QMessageBox
 from mysql.connector import Error, errorcode
 from db_connection.db_connection import ConnectionPool
 
@@ -18,21 +18,38 @@ class MyCoffee(QWidget):
     def db_init(self):
         db = Dbint()
         db.service()
+        if db.idx_database * db.idx_table * db.idx_trigger * db.idx_procedure * db.idx_user == 1:
+            QMessageBox.about(self, "알림", "초기화가 성공했습니다.")
+        else:
+            QMessageBox.about(self, "알림", "초기화가 실패했습니다.")
 
     def db_restore(self):
         backup_restore = BackupRestore()
         backup_restore.data_restore('product')
         backup_restore.data_restore('sale')
+        if backup_restore.idx_restore == 1:
+            QMessageBox.about(self, "알림", "복원이 성공했습니다.")
+        else:
+            QMessageBox.about(self, "알림", "복원이 실패했습니다.")
 
     def db_backup(self):
         backup_restore = BackupRestore()
         backup_restore.data_backup('product')
         backup_restore.data_backup('sale')
+        if backup_restore.idx_backup == 1:
+            QMessageBox.about(self, "알림", "백업이 성공했습니다.")
+        else:
+            QMessageBox.about(self, "알림", "백업이 실패했습니다.")
 
 
 class Dbint:
     def __init__(self):
         self._db = read_ddl_file()
+        self.idx_database = 1
+        self.idx_table = 1
+        self.idx_trigger = 1
+        self.idx_procedure = 1
+        self.idx_user = 1
 
     def __create_database(self):
         try:
@@ -49,6 +66,7 @@ class Dbint:
                 print("create database {}".format(self._db['database_name']))
             else:
                 print(err.msg)
+                self.idx_database = 0
         finally:
             cursor.close()
             conn.close()
@@ -65,12 +83,15 @@ class Dbint:
                 except Error as err:
                     if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
                         print("already exists.")
+                        self.idx_table = 0
                     else:
                         print(err.msg)
+                        self.idx_table = 0
                 else:
                     print("OK")
         except Error as err:
             print(err)
+            self.idx_table = 0
         finally:
             cursor.close()
             conn.close()
@@ -87,12 +108,15 @@ class Dbint:
                 except Error as err:
                     if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
                         print("already exists.")
+                        self.idx_trigger = 0
                     else:
                         print(err.msg)
+                        self.idx_trigger = 0
                 else:
                     print("OK")
         except Error as err:
             print(err)
+            self.idx_trigger = 0
         finally:
             cursor.close()
             conn.close()
@@ -109,12 +133,15 @@ class Dbint:
                 except Error as err:
                     if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
                         print("already exists.")
+                        self.idx_trigger = 0
                     else:
                         print(err.msg)
+                        self.idx_trigger = 0
                 else:
                     print("OK")
         except Error as err:
             print(err)
+            self.idx_trigger = 0
         finally:
             cursor.close()
             conn.close()
@@ -128,6 +155,7 @@ class Dbint:
             print("OK")
         except Error as err:
             print(err)
+            self.idx_user = 0
         finally:
             cursor.close()
             conn.close()
@@ -150,6 +178,8 @@ class BackupRestore:
     def __init__(self, source_dir='data/', data_dir='data/'):
         self.source_dir = os.path.abspath(source_dir) + "/"
         self.data_dir = os.path.abspath(data_dir) + "/"
+        self.idx_backup = 1
+        self.idx_restore = 1
 
     def data_backup(self, table_name):
         filename = table_name + '.txt'
@@ -166,6 +196,7 @@ class BackupRestore:
         except Error as err:
             print(err)
             print(table_name, "backup fail!")
+            self.idx_backup = 0
         finally:
             if conn.is_connected():
                 cursor.close()
@@ -188,6 +219,7 @@ class BackupRestore:
         except Error as err:
             print(err)
             print(table_name, "restore fail!")
+            self.idx_restore = 0
         finally:
             if conn.is_connected():
                 cursor.close()
