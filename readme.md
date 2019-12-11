@@ -8,16 +8,21 @@ SHOW VARIABLES LIKE "secure_file_priv";
 secure_file_priv=""
 */
 
-원하는 경로에 (Errcode: 13 - Permission denied) 해결책 https://dreamlog.tistory.com/563
+원하는 경로에 (Errcode: 13 - Permission denied) 해결책 
+https://dreamlog.tistory.com/563
+
 /etc/apparmor.d/usr.sbin.mysqld를 편집
 
-추가
-# Allow data files dir access
-  /var/lib/mysql-files/ r,
-  /var/lib/mysql-files/** rwk,
 
-  /home/work/PycharmProjects/python_mysql_study/restore_bakup/data/ r,
-  /home/work/PycharmProjects/python_mysql_study/restore_bakup/data/** rwk,
+추가
+
+    \# Allow data files dir access
+
+      /var/lib/mysql-files/ r,
+      /var/lib/mysql-files/** rwk,
+
+      /home/work/PycharmProjects/coffee_proj/data/ r,
+      /home/work/PycharmProjects/coffee_proj/data/** rwk,
 
 
 /etc/init.d/apparmor restart
