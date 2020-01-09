@@ -145,7 +145,7 @@ class BackupRestore:
         self.idx_restore = 1
 
     def data_backup(self, table_name):
-        filename = table_name + '.txt'
+        filename = table_name + '.csv'
         try:
             conn = ConnectionPool.get_instance().get_connection()
             cursor = conn.cursor()
@@ -168,7 +168,7 @@ class BackupRestore:
                 conn.close()
 
     def data_restore(self, table_name):
-        filename = table_name + '.txt'
+        filename = table_name + '.csv'
         try:
             conn = ConnectionPool.get_instance().get_connection()
             cursor = conn.cursor()
